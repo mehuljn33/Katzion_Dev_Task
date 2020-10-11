@@ -21,8 +21,8 @@ public class Katz_TransactionItemTriggerHandlerTest {
 
         //Data assert
         List<Transaction__c> transactions = [SELECT Id, (Select Id FROM TransactionItem__r) FROM Transaction__c];
-        System.assertEquals(1, transactions.size());
-        System.assertEquals(2, transactions[0].TransactionItem__r.size());
+        System.assertEquals(1, transactions.size(),'There should be only 1 transaction in the system at this moment');
+        System.assertEquals(2, transactions[0].TransactionItem__r.size(),'There should be only 2 transaction items under this transaction');
 
         //Begin Test execution
         Test.startTest();
@@ -33,10 +33,10 @@ public class Katz_TransactionItemTriggerHandlerTest {
         String indentifierForLogs = '%' + objTransaction.Id + '%';
         List<Integration_Logs__c> integrationLogs = [SELECT Id,Response_code__c,Integration_URL__c FROM Integration_Logs__c WHERE Identifier__c Like :indentifierForLogs];
         List<Transaction__c> transactionsAfterTest = [SELECT Transaction_Count__c,Number_of_Transaction_Items_in_SF__c FROM Transaction__c WHERE Id = :objTransaction.Id];
-        System.assertEquals(transactionsAfterTest[0].Transaction_Count__c, transactionsAfterTest[0].Number_of_Transaction_Items_in_SF__c);
-        System.assertEquals(1, integrationLogs.size());
-        System.assertEquals('200', integrationLogs[0].Response_code__c);
-        System.assertEquals(true, integrationLogs[0].Integration_URL__c.contains('callout:DUMMY_API'));
+        System.assertEquals(transactionsAfterTest[0].Transaction_Count__c, transactionsAfterTest[0].Number_of_Transaction_Items_in_SF__c,'The number of actual transaction items should match with the count field on Transaction');
+        System.assertEquals(1, integrationLogs.size(),'There should be 1 integration log created after the integration');
+        System.assertEquals('200', integrationLogs[0].Response_code__c,'The response code for this unit test should be 200');
+        System.assertEquals(true, integrationLogs[0].Integration_URL__c.contains('callout:DUMMY_API'),'The integration log should be created from the dummy API');
     }
 
     /**
@@ -52,8 +52,8 @@ public class Katz_TransactionItemTriggerHandlerTest {
 
         //Data assert
         List<Transaction__c> transactions = [SELECT Id, (Select Id FROM TransactionItem__r) FROM Transaction__c];
-        System.assertEquals(1, transactions.size());
-        System.assertEquals(2, transactions[0].TransactionItem__r.size());
+        System.assertEquals(1, transactions.size(),'There should be only 1 transaction in the system at this moment');
+        System.assertEquals(2, transactions[0].TransactionItem__r.size(),'There should be only 2 transaction items under this transaction');
 
         //Begin Test execution
         Test.startTest();
@@ -64,8 +64,8 @@ public class Katz_TransactionItemTriggerHandlerTest {
         String indentifierForLogs = '%' + objTransaction.Id + '%';
         List<Integration_Logs__c> integrationLogs = [SELECT Id,Response_code__c,Integration_URL__c FROM Integration_Logs__c WHERE Identifier__c Like :indentifierForLogs];
         List<Transaction__c> transactionsAfterTest = [SELECT Transaction_Count__c,Number_of_Transaction_Items_in_SF__c FROM Transaction__c WHERE Id = :objTransaction.Id];
-        System.assertNotEquals(transactionsAfterTest[0].Transaction_Count__c, transactionsAfterTest[0].Number_of_Transaction_Items_in_SF__c);
-        System.assertEquals(0, integrationLogs.size());
+        System.assertNotEquals(transactionsAfterTest[0].Transaction_Count__c, transactionsAfterTest[0].Number_of_Transaction_Items_in_SF__c,'The number of actual transaction items should NOT match with the count field on Transaction');
+        System.assertEquals(0, integrationLogs.size(),'There should be NO integration logs created');
     }
 
     /**
@@ -82,8 +82,8 @@ public class Katz_TransactionItemTriggerHandlerTest {
 
         //Data assert
         List<Transaction__c> transactions = [SELECT Id, (Select Id FROM TransactionItem__r) FROM Transaction__c];
-        System.assertEquals(1, transactions.size());
-        System.assertEquals(2, transactions[0].TransactionItem__r.size());
+        System.assertEquals(1, transactions.size(),'There should be only 1 transaction in the system at this moment');
+        System.assertEquals(2, transactions[0].TransactionItem__r.size(),'There should be only 2 transaction items under this transaction');
 
         //Begin Test execution
         Test.startTest();
@@ -94,10 +94,10 @@ public class Katz_TransactionItemTriggerHandlerTest {
         String indentifierForLogs = '%' + objTransaction.Id + '%';
         List<Integration_Logs__c> integrationLogs = [SELECT Id,Response_code__c,Integration_URL__c FROM Integration_Logs__c WHERE Identifier__c Like :indentifierForLogs];
         List<Transaction__c> transactionsAfterTest = [SELECT Transaction_Count__c,Number_of_Transaction_Items_in_SF__c FROM Transaction__c WHERE Id = :objTransaction.Id];
-        System.assertEquals(transactionsAfterTest[0].Transaction_Count__c, transactionsAfterTest[0].Number_of_Transaction_Items_in_SF__c);
-        System.assertEquals(1, integrationLogs.size());
-        System.assertNotEquals('200', integrationLogs[0].Response_code__c);
-        System.assertEquals(true, integrationLogs[0].Integration_URL__c.contains('callout:DUMMY_API'));
+        System.assertEquals(transactionsAfterTest[0].Transaction_Count__c, transactionsAfterTest[0].Number_of_Transaction_Items_in_SF__c,'The number of actual transaction items should match with the count field on Transaction');
+        System.assertEquals(1, integrationLogs.size(),'There should be 1 integration log created after the integration');
+        System.assertNotEquals('200', integrationLogs[0].Response_code__c,'The response code for this unit test should be 200');
+        System.assertEquals(true, integrationLogs[0].Integration_URL__c.contains('callout:DUMMY_API'),'The integration log should be created from the dummy API');
     }
 
     /**
@@ -122,9 +122,9 @@ public class Katz_TransactionItemTriggerHandlerTest {
                 FROM Transaction__c
                 WHERE Id = :objTransaction.Id
         ];
-        System.assertEquals(1, transactions.size());
-        System.assertEquals(3, transactions[0].TransactionItem__r.size());
-        System.assertEquals(transactions[0].Transaction_Count__c, transactions[0].Number_of_Transaction_Items_in_SF__c);
+        System.assertEquals(1, transactions.size(),'There should be only 1 transaction in the system at this moment');
+        System.assertEquals(3, transactions[0].TransactionItem__r.size(),'There should be only 3 transaction items under this transaction');
+        System.assertEquals(transactions[0].Transaction_Count__c, transactions[0].Number_of_Transaction_Items_in_SF__c,'The number of actual transaction items should match with the count field on Transaction');
 
         //Begin Test execution
         Test.startTest();
@@ -133,11 +133,9 @@ public class Katz_TransactionItemTriggerHandlerTest {
 
         //Functionality Assert
         List<Integration_Logs__c> integrationLogsAfter = [SELECT Id,Identifier__c,Response_code__c,Integration_URL__c FROM Integration_Logs__c WHERE Identifier__c Like :indentifierForLogs];
-        System.debug('@@objTransaction 2' + objTransaction);
-        System.debug('@@integrationLogsAfter' + integrationLogsAfter);
-        System.assertEquals(2, integrationLogsAfter.size());
-        System.assertEquals('200', integrationLogsAfter[0].Response_code__c);
-        System.assertEquals(true, integrationLogsAfter[0].Integration_URL__c.contains('callout:DUMMY_API'));
+        System.assertEquals(2, integrationLogsAfter.size(),'There should be 2 integration log created after the integration call for both APIs');
+        System.assertEquals('200', integrationLogsAfter[0].Response_code__c,'The response code for this unit test should be 200');
+        System.assertEquals(true, integrationLogsAfter[0].Integration_URL__c.contains('callout:DUMMY_API'),'The integration log should be created from the dummy API');
     }
 
     /**
@@ -161,9 +159,9 @@ public class Katz_TransactionItemTriggerHandlerTest {
                 FROM Transaction__c
                 WHERE Id = :objTransaction.Id
         ];
-        System.assertEquals(1, transactions.size());
-        System.assertEquals(3, transactions[0].TransactionItem__r.size());
-        System.assertEquals(transactions[0].Transaction_Count__c, transactions[0].Number_of_Transaction_Items_in_SF__c);
+        System.assertEquals(1, transactions.size(),'There should be only 1 transaction in the system at this moment');
+        System.assertEquals(3, transactions[0].TransactionItem__r.size(),'There should be only 3 transaction items under this transaction');
+        System.assertEquals(transactions[0].Transaction_Count__c, transactions[0].Number_of_Transaction_Items_in_SF__c,'The number of actual transaction items should match with the count field on Transaction');
 
         //Begin Test execution
         Test.startTest();
@@ -172,9 +170,9 @@ public class Katz_TransactionItemTriggerHandlerTest {
 
         //Functionality Assert
         List<Integration_Logs__c> integrationLogsAfter = [SELECT Id,Response_code__c,Integration_URL__c FROM Integration_Logs__c WHERE Identifier__c Like :indentifierForLogs];
-        System.assertEquals(2, integrationLogsAfter.size());
-        System.assertNotEquals('200', integrationLogsAfter[0].Response_code__c);
-        System.assertEquals(true, integrationLogsAfter[0].Integration_URL__c.contains('callout:DUMMY_API'));
+        System.assertEquals(2, integrationLogsAfter.size(),'There should be 2 integration logs created after the integration call for both APIs');
+        System.assertNotEquals('200', integrationLogsAfter[0].Response_code__c,'The response code for this unit test should NOT be 200');
+        System.assertEquals(true, integrationLogsAfter[0].Integration_URL__c.contains('callout:DUMMY_API'),'The integration log should be created from the dummy API');
     }
 
     /**
@@ -196,11 +194,11 @@ public class Katz_TransactionItemTriggerHandlerTest {
 
         //Data assert
         transactions = [SELECT Id, (Select Id FROM TransactionItem__r) FROM Transaction__c];
-        System.assertEquals(4, transactions.size());
-        System.assertEquals(2, transactions[0].TransactionItem__r.size());
-        System.assertEquals(2, transactions[1].TransactionItem__r.size());
-        System.assertEquals(2, transactions[2].TransactionItem__r.size());
-        System.assertEquals(2, transactions[3].TransactionItem__r.size());
+        System.assertEquals(4, transactions.size(),'There should be only 4 transactions in the system at this moment');
+        System.assertEquals(2, transactions[0].TransactionItem__r.size(),'There should be only 2 transaction items under the first transaction record');
+        System.assertEquals(2, transactions[1].TransactionItem__r.size(),'There should be only 2 transaction items under the first transaction record');
+        System.assertEquals(2, transactions[2].TransactionItem__r.size(),'There should be only 2 transaction items under the first transaction record');
+        System.assertEquals(2, transactions[3].TransactionItem__r.size(),'There should be only 2 transaction items under the first transaction record');
 
         //Begin Test execution
         Test.startTest();
@@ -218,20 +216,20 @@ public class Katz_TransactionItemTriggerHandlerTest {
         ];
 
         List<Transaction__c> transactionsAfterTest = [SELECT Transaction_Count__c,Number_of_Transaction_Items_in_SF__c FROM Transaction__c];
-        System.assertEquals(4, transactionsAfterTest.size());
-        System.assertEquals(transactionsAfterTest[0].Transaction_Count__c, transactionsAfterTest[0].Number_of_Transaction_Items_in_SF__c);
-        System.assertEquals(transactionsAfterTest[1].Transaction_Count__c, transactionsAfterTest[0].Number_of_Transaction_Items_in_SF__c);
-        System.assertEquals(transactionsAfterTest[2].Transaction_Count__c, transactionsAfterTest[0].Number_of_Transaction_Items_in_SF__c);
-        System.assertEquals(transactionsAfterTest[3].Transaction_Count__c, transactionsAfterTest[0].Number_of_Transaction_Items_in_SF__c);
+        System.assertEquals(4, transactionsAfterTest.size(),'There should be only 4 transactions in the system at this moment');
+        System.assertEquals(transactionsAfterTest[0].Transaction_Count__c, transactionsAfterTest[0].Number_of_Transaction_Items_in_SF__c,'The number of actual transaction items should match with the count field on the 1st Transaction');
+        System.assertEquals(transactionsAfterTest[1].Transaction_Count__c, transactionsAfterTest[0].Number_of_Transaction_Items_in_SF__c,'The number of actual transaction items should match with the count field on the 2nd Transaction');
+        System.assertEquals(transactionsAfterTest[2].Transaction_Count__c, transactionsAfterTest[0].Number_of_Transaction_Items_in_SF__c,'The number of actual transaction items should match with the count field on the 3rd Transaction');
+        System.assertEquals(transactionsAfterTest[3].Transaction_Count__c, transactionsAfterTest[0].Number_of_Transaction_Items_in_SF__c,'The number of actual transaction items should match with the count field on the 4rd Transaction');
 
-        System.assertEquals(1, integrationLogs.size());
-        System.assertEquals('200', integrationLogs[0].Response_code__c);
-        System.assertEquals(true, integrationLogs[0].Integration_URL__c.contains('callout:DUMMY_API'));
+        System.assertEquals(1, integrationLogs.size(),'There should be 1 integration log created after the integration');
+        System.assertEquals('200', integrationLogs[0].Response_code__c,'The response code for this unit test should be 200');
+        System.assertEquals(true, integrationLogs[0].Integration_URL__c.contains('callout:DUMMY_API'),'The integration log should be created from the dummy API');
         System.assertEquals(true, integrationLogs[0].Identifier__c != null);
-        System.assertEquals(true, integrationLogs[0].Identifier__c.contains(transactions[0].Id));
-        System.assertEquals(true, integrationLogs[0].Identifier__c.contains(transactions[1].Id));
-        System.assertEquals(true, integrationLogs[0].Identifier__c.contains(transactions[2].Id));
-        System.assertEquals(true, integrationLogs[0].Identifier__c.contains(transactions[3].Id));
+        System.assertEquals(true, integrationLogs[0].Identifier__c.contains(transactions[0].Id),'The integration log should have 1st transactionid as one of the identifier');
+        System.assertEquals(true, integrationLogs[0].Identifier__c.contains(transactions[1].Id),'The integration log should have 2nd transactionid as one of the identifier');
+        System.assertEquals(true, integrationLogs[0].Identifier__c.contains(transactions[2].Id),'The integration log should have 3rd transactionid as one of the identifier');
+        System.assertEquals(true, integrationLogs[0].Identifier__c.contains(transactions[3].Id),'The integration log should have 4th transactionid as one of the identifier');
 
     }
 
@@ -249,8 +247,8 @@ public class Katz_TransactionItemTriggerHandlerTest {
 
         //Data assert
         List<Transaction__c> transactions = [SELECT Id, (Select Id FROM TransactionItem__r) FROM Transaction__c];
-        System.assertEquals(1, transactions.size());
-        System.assertEquals(2, transactions[0].TransactionItem__r.size());
+        System.assertEquals(1, transactions.size(),'There should be only 1 transaction in the system at this moment');
+        System.assertEquals(2, transactions[0].TransactionItem__r.size(),'There should be only 2 transaction items under the first transaction');
 
         //Begin Test execution
         Test.startTest();
@@ -261,10 +259,10 @@ public class Katz_TransactionItemTriggerHandlerTest {
         String indentifierForLogs = '%' + objTransaction.Id + '%';
         List<Integration_Logs__c> integrationLogs = [SELECT Id,Response_code__c,Integration_URL__c FROM Integration_Logs__c WHERE Identifier__c Like :indentifierForLogs];
         List<Transaction__c> transactionsAfterTest = [SELECT Transaction_Count__c,Number_of_Transaction_Items_in_SF__c FROM Transaction__c WHERE Id = :objTransaction.Id];
-        System.assertEquals(transactionsAfterTest[0].Transaction_Count__c, transactionsAfterTest[0].Number_of_Transaction_Items_in_SF__c);
-        System.assertEquals(1, integrationLogs.size());
-        System.assertEquals('500', integrationLogs[0].Response_code__c);
-        System.assertEquals(true, integrationLogs[0].Integration_URL__c.contains('callout:DUMMY_API'));
+        System.assertEquals(transactionsAfterTest[0].Transaction_Count__c, transactionsAfterTest[0].Number_of_Transaction_Items_in_SF__c,'The number of actual transaction items should match with the count field on Transaction');
+        System.assertEquals(1, integrationLogs.size(),'There should be 1 integration log created after the integration');
+        System.assertEquals('500', integrationLogs[0].Response_code__c,'The response code for this unit test should be 500');
+        System.assertEquals(true, integrationLogs[0].Integration_URL__c.contains('callout:DUMMY_API'),'The integration log should be created from the dummy API');
     }
 
 }
