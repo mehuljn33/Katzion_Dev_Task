@@ -13,3 +13,5 @@
 5. The test coverage for all code peices stand at 97% (3% less due to skipping test coverage for Chaining of Queueable apex and API re trigger mechanism which was not possible)
 
 6. UI testing has been done on multiple transaction item records in the developer org and seemed to be working as expected
+
+7. A flow diagram has been attached for explaining the process flow
